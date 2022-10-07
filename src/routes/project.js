@@ -6,7 +6,14 @@ const Project = require("../models/index");
 
 const router = express.Router();
 
-const {} = require("../controllers/user");
+const {
+  getAllProjects,
+  searchProjectsByName,
+  getProjectById,
+  createProject,
+  updateProject,
+  deleteProject,
+} = require("../controllers/project");
 
 router.get("*/", getAllProjects);
 router.get("/search", searchProjectsByName);

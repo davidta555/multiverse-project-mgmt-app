@@ -6,11 +6,18 @@ const Issue = require("../models/index");
 
 const router = express.Router();
 
-const {} = require("../controllers/user");
+const {
+  getAllIssues,
+  searchIssuesByName,
+  getIssueById,
+  createIssue,
+  updateIssue,
+  deleteIssue,
+} = require("../controllers/issue");
 
-router.get("*/", getAllUsers);
-router.get("/search", searchUsersByName);
-router.get("/:id", getUserById);
+router.get("*/", getAllIssues);
+router.get("/search", searchIssuesByName);
+router.get("/:id", getIssueById);
 router.post("/", createIssue);
 router.put("/:id", updateIssue);
 router.delete("/:id", deleteIssue);

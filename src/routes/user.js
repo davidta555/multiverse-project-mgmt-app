@@ -6,7 +6,14 @@ const User = require("../models/index");
 
 const router = express.Router();
 
-const {} = require("../controllers/user");
+const {
+  getAllUsers,
+  searchUsersByName,
+  getUserById,
+  createUser,
+  updateUser,
+  deleteUser,
+} = require("../controllers/user");
 
 router.get("*/", getAllUsers);
 router.get("/search", searchUsersByName);
