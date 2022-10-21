@@ -15,10 +15,24 @@ const {
   deleteIssue,
 } = require("../controllers/issue");
 
+const setUser = async (req, res, next) => {
+  const auth = req.header("Autorization");
+
+  if (!auth) {
+    next();
+  } else {
+    const [, token] = auth.split(" ");
+    const user = jwt.verify(token, JWT_SECRET);
+
+    req.user = user;
+    next();
+  }
+};
+
 router.get("*/", getAllIssues);
 router.get("/search", searchIssuesByName);
 router.get("/:id", getIssueById);
-router.post("/", createIssue);
+router.post("/", setUser, createIssue);
 router.put("/:id", updateIssue);
 router.delete("/:id", deleteIssue);
 

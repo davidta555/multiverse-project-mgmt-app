@@ -15,10 +15,24 @@ const {
   deleteProject,
 } = require("../controllers/project");
 
+const setUser = async (req, res, next) => {
+  const auth = req.header("Autorization");
+
+  if (!auth) {
+    next();
+  } else {
+    const [, token] = auth.split(" ");
+    const user = jwt.verify(token, JWT_SECRET);
+
+    req.user = user;
+    next();
+  }
+};
+
 router.get("*/", getAllProjects);
 router.get("/search", searchProjectsByName);
 router.get("/:id", getProjectById);
-router.post("/", createProject);
+router.post("/", setUser, createProject);
 router.put("/:id", updateProject);
 router.delete("/:id", deleteProject);
 
