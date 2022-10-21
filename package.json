@@ -4,9 +4,9 @@
   "description": "backend api for a project management application",
   "main": "server.js",
   "scripts": {
-    "seed": "node seeder.js",
+    "data:import": "DEBUG=app:seeder node seeder.js -import",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "DEBUG=app:* node server.js",
   },
   "repository": {
     "type": "git",
