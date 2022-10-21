@@ -1,8 +1,11 @@
 const cors = require("cors");
 const express = require("express");
-const dotenv = require("dotenv");
+require("dotenv").config({path: path.join(__dirname, "..", ".env")})
 const path = require("path");
 const sequelize = require("./src/db");
+const morgan = require("morgan");
+const { auth } = require("express-openid-connect");
+const jwt = require("jsonwebtoken");
 
 //import routes
 const userRoute = require("./src/routes/user.js");
@@ -21,13 +24,32 @@ sequelize
 //middleware
 const app = express();
 app.use(cors());
+app.use(morgan("dev"));
 app.use(express.json());
+app.use(express.urlencoded({extended: true}));
+
+const {
+  AUTH0_SECRET,
+  AUTH0_AUDIENCE,
+  AUTH0_CLIENT_ID,
+  AUTH0_BASE_URL,
+} = process.env;
+
+const config = {
+  authRequired: true,
+  auth0Logout: true,
+  secret: AUTH0_SECRET,
+  baseURL: AUTH0_AUDIENCE,
+  clientID: AUTH0_CLIENT_ID,
+  issuerBaseURL: AUTH0_BASE_URL,
+};
+
+app.use(auth(config));
 
 if (process.env.MODE) {
   app.use("dev");
 }
 
-dotenv.config({ path: path.join(__dirname, "..", ".env") }); //find environment variables .env
 app.use(express.static(path.join(__dirname, "src", "public"))); //public
 app.use(express.json()); //server can speak in .json
 
