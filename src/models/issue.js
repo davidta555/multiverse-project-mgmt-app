@@ -5,7 +5,7 @@ const Issue = sequelize.define("issue", {
   title: Sequelize.STRING,
   date_created: Sequelize.DATE,
   description: Sequelize.TEXT("long"),
-  hours_worked: Sequelize.INTEGER,
+  hours_spend: Sequelize.INTEGER,
   status: Sequelize.STRING,
   AssignedUserId: Sequelize.INTEGER,
 });
