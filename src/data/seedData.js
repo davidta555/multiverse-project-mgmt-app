@@ -22,7 +22,7 @@ module.exports = {
       email: "blelievre2@reverbnation.com",
       username: "blelievre2",
       password: "lRsFeQ1ILf",
-      admin: true,
+      admin: false,
     },
     {
       first_name: "Clareta",
@@ -46,7 +46,7 @@ module.exports = {
       email: "klinnell5@cbsnews.com",
       username: "klinnell5",
       password: "ApGEGQhlc",
-      admin: true,
+      admin: false,
     },
     {
       first_name: "Dionysus",
@@ -54,7 +54,7 @@ module.exports = {
       email: "dbarlow6@netscape.com",
       username: "dbarlow6",
       password: "dwiqXzou",
-      admin: true,
+      admin: false,
     },
     {
       first_name: "Christye",
@@ -70,7 +70,7 @@ module.exports = {
       email: "dhayball8@phoca.cz",
       username: "dhayball8",
       password: "R5QebfXB",
-      admin: true,
+      admin: false,
     },
     {
       first_name: "Rafferty",
@@ -78,7 +78,7 @@ module.exports = {
       email: "rbuckthorpe9@mozilla.com",
       username: "rbuckthorpe9",
       password: "pwJxThKDcT",
-      admin: true,
+      admin: false,
     },
     {
       first_name: "Kasper",
@@ -86,7 +86,7 @@ module.exports = {
       email: "kjiraneka@sakura.ne.jp",
       username: "kjiraneka",
       password: "XxclLlSco",
-      admin: true,
+      admin: false,
     },
     {
       first_name: "Justis",
@@ -118,7 +118,7 @@ module.exports = {
       email: "iosheerine@wikipedia.org",
       username: "iosheerine",
       password: "3yWb3CeX",
-      admin: true,
+      admin: false,
     },
     {
       first_name: "Sibby",
@@ -126,7 +126,7 @@ module.exports = {
       email: "sringerf@digg.com",
       username: "sringerf",
       password: "1hbQDEbbqHT3",
-      admin: true,
+      admin: false,
     },
     {
       first_name: "Coleman",
@@ -134,7 +134,7 @@ module.exports = {
       email: "cthorneyworkg@usnews.com",
       username: "cthorneyworkg",
       password: "uxub4GPAuNdo",
-      admin: true,
+      admin: false,
     },
     {
       first_name: "Daryn",
@@ -142,7 +142,7 @@ module.exports = {
       email: "dshewryh@dion.ne.jp",
       username: "dshewryh",
       password: "P6265v",
-      admin: true,
+      admin: false,
     },
     {
       first_name: "Frasco",
