@@ -8,7 +8,7 @@ const router = express.Router();
 
 const {
   getAllUsers,
-  searchUsersByName,
+  // searchUsersByName,
   getUserById,
   getCurrentUser,
   // createUser,
@@ -32,7 +32,7 @@ const createAuth0User = async (req, res, next) => {
 };
 
 router.get("*/", getAllUsers);
-router.get("/search", searchUsersByName);
+// router.get("/search", searchUsersByName);
 router.get("/:id", getUserById);
 router.get("/me", createAuth0User, getCurrentUser);
 // router.post("/", createUser);

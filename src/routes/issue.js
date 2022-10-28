@@ -8,7 +8,7 @@ const router = express.Router();
 
 const {
   getAllIssues,
-  searchIssuesByName,
+  // searchIssuesByName,
   getIssueById,
   createIssue,
   updateIssue,
@@ -30,7 +30,7 @@ const setUser = async (req, res, next) => {
 };
 
 router.get("*/", getAllIssues);
-router.get("/search", searchIssuesByName);
+// router.get("/search", searchIssuesByName);
 router.get("/:id", getIssueById);
 router.post("/", setUser, createIssue);
 router.put("/:id", updateIssue);

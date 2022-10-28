@@ -8,7 +8,7 @@ const router = express.Router();
 
 const {
   getAllProjects,
-  searchProjectsByName,
+  // searchProjectsByName,
   getProjectById,
   createProject,
   updateProject,
@@ -30,7 +30,7 @@ const setUser = async (req, res, next) => {
 };
 
 router.get("*/", getAllProjects);
-router.get("/search", searchProjectsByName);
+// router.get("/search", searchProjectsByName);
 router.get("/:id", getProjectById);
 router.post("/", setUser, createProject);
 router.put("/:id", updateProject);
