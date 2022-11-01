@@ -29,16 +29,11 @@ app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const {
-  AUTH0_SECRET,
-  AUTH0_AUDIENCE,
-  AUTH0_CLIENT_ID,
-  AUTH0_BASE_URL,
-  JWT_SECRET,
-} = process.env;
+const { AUTH0_SECRET, AUTH0_AUDIENCE, AUTH0_CLIENT_ID, AUTH0_BASE_URL } =
+  process.env;
 
 const config = {
-  authRequired: true,
+  authRequired: false,
   auth0Logout: true,
   secret: AUTH0_SECRET,
   baseURL: AUTH0_AUDIENCE,
