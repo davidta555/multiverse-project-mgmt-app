@@ -2,6 +2,8 @@ const sequelize = require("../db");
 const Issue = require("../models/issue");
 const debug = require("debug")("app:controllers");
 const { validationResult } = require("express-validator");
+const jwt = require("jsonwebtoken");
+const { JWT_SECRET } = process.env;
 
 /**
  * @desc Gets all issues
