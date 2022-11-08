@@ -11,24 +11,28 @@ const { JWT_SECRET } = process.env;
  * @access Public
  */
 exports.getAllIssues = async (req, res) => {
-  try {
-    const issues = await Issue.findAll();
+  if (!req.user) {
+    res.status(401);
+  } else {
+    try {
+      const issues = await Issue.findAll();
 
-    if (!issues) {
-      res.status(400).json({
-        success: false,
-        message: "No issues found",
-      });
-    } else {
+      if (!issues) {
+        res.status(400).json({
+          success: false,
+          message: "No issues found",
+        });
+      } else {
+        res
+          .status(200)
+          .json({ issues, success: true, message: "All issues returned" });
+      }
+    } catch (error) {
+      debug(error);
       res
-        .status(200)
-        .json({ issues, success: true, message: "All issues returned" });
+        .status(400)
+        .json({ success: false, message: ` - Error: ${error.message}` });
     }
-  } catch (error) {
-    debug(error);
-    res
-      .status(400)
-      .json({ success: false, message: ` - Error: ${error.message}` });
   }
 };
 

@@ -17,13 +17,6 @@ Issue.belongsTo(User);
 Project.hasMany(Issue);
 Issue.belongsTo(Project);
 
-//a user can create many projects 1 to many*
-
-//users can create many issues 1 to many
-//a user can be assign to any issues 1 to many*
-
-//a project can have many issues 1 to many*
-
 module.exports = {
   User,
   Project,

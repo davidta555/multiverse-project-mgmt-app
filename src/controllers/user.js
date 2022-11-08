@@ -3,7 +3,9 @@ const User = require("../models/user");
 const debug = require("debug")("app:controllers");
 const { validationResult } = require("express-validator");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
 const { JWT_SECRET } = process.env;
+const SALT_COUNT = 10;
 
 /**
  * @desc Gets all users
@@ -23,7 +25,6 @@ exports.getAllUsers = async (req, res) => {
       res
         .status(200)
         .json({ users, success: true, message: "All users returned" });
-      res.send(req.oidc.isAuthenticated() ? "Logged in" : "Logged out");
     }
   } catch (error) {
     debug(error);
@@ -72,9 +73,7 @@ exports.getUserById = async (req, res) => {
  */
 exports.getCurrentUser = async (req, res) => {
   try {
-    const user = await User.findOne({
-      where: { username: req.oidc.user.username, raw: true },
-    });
+    const user = await User.findOne({ where: { username } });
 
     if (!user) {
       res.status(400).json({
@@ -82,7 +81,7 @@ exports.getCurrentUser = async (req, res) => {
         message: "User not found",
       });
     } else {
-      const token = jwt.sign(user, JWT_SECRET, { expiresIn: "1w" });
+      const token = jwt.sign(user, process.env.JWT_SECRET, { expiresIn: "1w" });
 
       res.send({ user, token });
     }
@@ -95,60 +94,47 @@ exports.getCurrentUser = async (req, res) => {
   }
 };
 
-// /**
-//  * @desc Create single user
-//  * @route POST api/user/create
-//  * @access Private
-//  */
-// exports.createUser = async (req, res) => {
-//   const errors = validationResult(req);
-
-//   if (!errors.isEmpty()) {
-//   } else {
-//     try {
-//       const newUser = req.body;
-//       const createdUser = await User.create(newUser);
-//       res.status(200).json({
-//         createdUser,
-//         success: true,
-//         message: "User successfully created",
-//       });
-//     } catch (error) {
-//       debug(error);
-//       res.status(400).json({
-//         success: false,
-//         message: `User not created - Error: ${error.message}`,
-//       });
-//     }
-//   }
-// };
-
 /**
  * @desc Register single user
  * @route POST api/user/login
  * @access Public
  */
 exports.registerUser = async (req, res) => {
-  if (!errors.isEmpty()) {
-    res.status(400).json({ success: false, error: errors.array() });
-  } else {
-    try {
-      const { username, password } = req.body;
-      const hashedPw = await bcrypt.hash(password, SALT_COUNT);
+  try {
+    const { email, username, password } = req.body;
 
-      const newUser = await User.create({ username, password: hashedPw });
-
-      const token = jwt.sign(
-        { id: newUser.id, username: newUser.username },
-        JWT_SECRET
-      );
-      res.send({ message: "success", token });
-    } catch (error) {
+    if (!username || !email || !password) {
       res.status(400).json({
         success: false,
         message: `User not registered - Error: ${error.message}`,
       });
     }
+
+    const userExists = await User.findOne({ email });
+    if (userExists) {
+      res.status(400).json({
+        success: false,
+        message: `User not registered - Error: ${error.message}`,
+      });
+    }
+    const hashedPw = await bcrypt.hash(password, SALT_COUNT);
+
+    const newUser = await User.create({
+      email,
+      username,
+      password: hashedPw,
+    });
+
+    const token = jwt.sign(
+      { id: newUser.id, username: newUser.username },
+      JWT_SECRET
+    );
+    res.send({ message: "success", token });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message: `User not registered - Error: ${error.message}`,
+    });
   }
 };
 
@@ -158,27 +144,22 @@ exports.registerUser = async (req, res) => {
  * @access Public
  */
 exports.loginUser = async (req, res) => {
-  if (!error.isEmpty()) {
-    res.status(400).json({ success: false, error: errors.array() });
-  } else {
-    try {
-      const { username, password } = req.body;
-      const user = await User.findOne({ where: { username } });
-      const passwordMatch = await bcrypt.compare(password, user.password);
+  try {
+    const { username, password } = req.body;
+    const user = await User.findOne({ where: { username } });
 
-      if (passwordMatch) {
-        const { id, username } = user;
-        const token = jwt.sign({ id, username }, JWT_SECRET);
-        res.send({ message: "success", token });
-      } else {
-        res.sendStatus(401).send("user not found");
-      }
-    } catch (error) {
-      res.status(400).json({
-        success: false,
-        message: `Could not login user - Error: ${error.message}`,
-      });
+    if (user && (await bcrypt.compare(password, user.password))) {
+      const { id, username } = user;
+      const token = jwt.sign({ id, username }, JWT_SECRET);
+      res.send({ message: "success", token });
+    } else {
+      res.status(401).send("user not found");
     }
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message: `Could not login user - Error: ${error.message}`,
+    });
   }
 };
 
